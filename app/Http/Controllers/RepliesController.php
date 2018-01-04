@@ -30,6 +30,6 @@ class RepliesController extends Controller
             ]
         );
 
-        return back();
+        return back()->with('flash', 'Your replies has been left.');
     }
 }

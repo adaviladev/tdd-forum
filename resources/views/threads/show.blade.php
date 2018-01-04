@@ -45,8 +45,11 @@
                         </div>
                         <!-- /.form-group -->
 
-                        <button type="submit" class="btn btn-default">Post</button>
-                        <!-- /.btn btn-default -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">Post</button>
+                            <!-- /.btn btn-default -->
+                        </div>
+                        <!-- /.form-group -->
                     </form>
                 @else
                     <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
