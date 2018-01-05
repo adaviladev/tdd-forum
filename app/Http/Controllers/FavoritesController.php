@@ -85,11 +85,13 @@ class FavoritesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Reply $reply
+     *
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function destroy($id)
+    public function destroy(Reply $reply)
     {
-        //
+        $reply->unfavorite();
     }
 }
