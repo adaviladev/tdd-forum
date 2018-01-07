@@ -11,20 +11,26 @@ class Thread extends Model
     protected $guarded = [];
 
     protected $with = [
-    	'channel',
-    	'creator',
+        'channel',
+        'creator',
     ];
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
 
-        static::addGlobalScope('replyCount', function ($builder) {
-            $builder->withCount('replies');
-        });
+        static::addGlobalScope(
+            'replyCount',
+            function ($builder) {
+                $builder->withCount('replies');
+            }
+        );
 
-        static::deleting(function($thread) {
-        	$thread->replies->each->delete();
-        });
+        static::deleting(
+            function ($thread) {
+                $thread->replies->each->delete();
+            }
+        );
     }
 
 
@@ -53,9 +59,16 @@ class Thread extends Model
         return $this->hasMany(Reply::class);
     }
 
+    /**
+     * Add a reply to the thread.
+     *
+     * @param array $reply
+     *
+     * @return Model
+     */
     public function addReply($reply)
     {
-        $this->replies()
-             ->create($reply);
+        return $this->replies()
+                    ->create($reply);
     }
 }

@@ -12,6 +12,16 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script>
+        window.App = {!! json_encode([
+            'csrfToken' => csrf_token(),
+            'signedIn' => Auth::check(),
+            'user' => Auth::user(),
+        ]) !!};
+    </script>
+
     <style type="text/css">
         body {
             padding-bottom: 100px;

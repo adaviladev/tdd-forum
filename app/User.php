@@ -15,7 +15,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
     ];
 
     /**
@@ -24,19 +26,23 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'email',
+        'password',
+        'remember_token',
     ];
 
-    public function activity(){
+    public function activity()
+    {
         return $this->hasMany(Activity::class);
     }
 
-	public function getRouteKeyName()
-	{
-		return 'name';
-	}
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
 
-	public function threads(){
-	    return $this->hasMany(Thread::class)->latest();
-	}
+    public function threads()
+    {
+        return $this->hasMany(Thread::class)->latest();
+    }
 }

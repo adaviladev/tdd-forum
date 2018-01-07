@@ -1,4 +1,3 @@
-
 window._ = require('lodash');
 
 /**
@@ -8,10 +7,11 @@ window._ = require('lodash');
  */
 
 try {
-    window.$ = window.jQuery = require('jquery');
+  window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap-sass');
-} catch (e) {}
+  require('bootstrap-sass');
+} catch (e) {
+}
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -19,6 +19,12 @@ try {
  * and simple, leaving you to focus on building your next great project.
  */
 window.Vue = require('vue');
+window.Vue.prototype.authorize = function(handler) {
+  // Additional Admin privileges.
+  let user = window.App.user;
+
+  return user ? handler(user) : false;
+};
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -39,9 +45,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error(
+      'CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -60,6 +67,6 @@ if (token) {
 // });
 
 window.events = new Vue();
-window.flash = function (message) {
-    window.events.$emit('flash', message);
-}
+window.flash = function(message) {
+  window.events.$emit('flash', message);
+};
