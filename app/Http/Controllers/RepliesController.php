@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Channel;
 use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
@@ -10,19 +11,28 @@ class RepliesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['index']);
+    }
+
+    public function index(Channel $channel, Thread $thread)
+    {
+        return $thread->replies()->paginate(5);
     }
 
     /**
      * @param             $channelId
      * @param \App\Thread $thread
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store($channelId, Thread $thread)
     {
-        $this->validate(request(), [
-            'body' => 'required'
-        ]);
+        $this->validate(
+            request(),
+            [
+                'body' => 'required',
+            ]
+        );
 
         $reply = $thread->addReply(
             [
@@ -31,7 +41,7 @@ class RepliesController extends Controller
             ]
         );
 
-        if(request()->expectsJson()) {
+        if (request()->expectsJson()) {
             return $reply->load('owner');
         }
 
@@ -44,9 +54,9 @@ class RepliesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @param Reply $reply
      *
-     * @return \Illuminate\Http\Response
+     * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @internal param Thread $thread
-     *
      */
     public function update(Request $request, Reply $reply)
     {
@@ -61,9 +71,10 @@ class RepliesController extends Controller
      * @param Reply $reply
      *
      * @return \Illuminate\Http\Response
+     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @internal param \App\Channel $channel
      * @internal param Thread $thread
-     *
      */
     public function destroy(Reply $reply)
     {
@@ -71,7 +82,7 @@ class RepliesController extends Controller
 
         $reply->delete();
 
-        if(request()->expectsJson()) {
+        if (request()->expectsJson()) {
             return response(['status' => 'Reply deleted']);
         }
 
