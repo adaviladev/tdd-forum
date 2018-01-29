@@ -35,12 +35,17 @@
     computed: {
       signedIn() {
         return window.App.signedIn;
-      }
+      },
     },
 
     methods: {
       addReply() {
         axios.post(location.pathname + '/replies', { body: this.body })
+             .catch(error => {
+                   console.log('ERROR');
+                   flash(error.response.data, 'danger');
+                 },
+             )
              .then(({ data }) => {
                this.body = '';
 
